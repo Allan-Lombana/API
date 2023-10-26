@@ -59,26 +59,33 @@ app.post('/api/articulos',(req,res)=>{
     })
 })
 
-app.get('/api/articulos/:id', (req,res)=>{
-    conexion.query('SELECT * FROM articulos WHERE id=?', [req.params.id],(error,fila)=>{
-        if(error){ñ
+app.put('/api/articulos/:id', (req, res) => {
+    const id = req.params.id;
+    const updatedArticulo = {
+        descripcion: req.body.descripcion,
+        precio: req.body.precio,
+        stock: req.body.stock
+    };
+
+    const sql = "UPDATE articulos SET ? WHERE id = ?";
+    conexion.query(sql, [updatedArticulo, id], (error, results) => {
+        if (error) {
             throw error;
-        } else{
-            res.send(fila);
-            res.send(fila[0].descripción);
+        } else {
+            res.send(results);
         }
     });
 });
 
-app.post('/api/articulos',(req,res)=>{
-    let data = {descripcion:req.body.descripcion, precio:req.body.precio, stock:req.body.stock};
-    let sql = "INSERT INTO articulos SET ?";
-    conexion.query(sql,data,function(error,results){
-        if(error){
+app.delete('/api/articulos/:id', (req, res) => {
+    const id = req.params.id;
+
+    const sql = "DELETE FROM articulos WHERE id = ?";
+    conexion.query(sql, [id], (error, results) => {
+        if (error) {
             throw error;
-        } else{
+        } else {
             res.send(results);
         }
-    })
-})
-
+    });
+});
