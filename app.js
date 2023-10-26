@@ -58,3 +58,14 @@ app.post('/api/articulos',(req,res)=>{
         }
     })
 })
+
+app.get('/api/articulos/:id', (req,res)=>{
+    conexion.query('SELECT * FROM articulos WHERE id=?', [req.params.id],(error,fila)=>{
+        if(error){ñ
+            throw error;
+        } else{
+            res.send(fila);
+            res.send(fila[0].descripción);
+        }
+    });
+});
